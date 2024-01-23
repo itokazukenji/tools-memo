@@ -11,10 +11,16 @@ $ sudo systemctl enable squid
 # squid起動確認
 $ sudo systemctl status squid
 
+
+
+
 # ファイル修正
 $ sudo vi /etc/squid/squid.conf
 
-### 48行目辺りに下記行追加(正確には「http_access deny all」より前のセクションに記載します)
+### # And finally deny all other access to this proxy
+http_access deny all
+より上に ↓ を記載
+
 ## IP許可設定
 # Squidを使用する自宅PCのIPアドレス
 acl myip src xx.xx.xx.xx/32
