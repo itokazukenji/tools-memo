@@ -9,5 +9,5 @@ $ yt-dlp -f 616+251 --merge-output-format mp4 "https://www.youtube.com/watch?v=h
 yt-dlp -f "bv*+ba/best" "https://hoge.com?v=hoge"
 
 # 動画から最上級の音声ファイルを取り出す
-yt-dlp -x --audio-format mp3 --audio-quality 0 'https://hoge'
+yt-dlp -x --audio-format mp3 --output '/path/to/directory/%(title)s.%(ext)s' --audio-quality 0 'https://www.youtube.com/watch?v=taj2BwNSq18'
 ```
