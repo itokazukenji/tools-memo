@@ -10,4 +10,7 @@ yt-dlp -f "bv*+ba/best" "https://hoge.com?v=hoge"
 
 # 動画から最上級の音声ファイルを取り出す
 yt-dlp -x --audio-format mp3 --output '/path/to/directory/%(title)s.%(ext)s' --audio-quality 0 'https://www.youtube.com/watch?v=taj2BwNSq18'
+
+# 画質は指定、音声は最高音質
+yt-dlp -f "bv[height=1080]+ba/bestvideo[height=1080]+bestaudio" -o "%(title)s.%(ext)s" <URL>
 ```
