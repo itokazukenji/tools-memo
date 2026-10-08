@@ -4,4 +4,45 @@ magick mogrify -format webp *.jpg
 sips -Z 768 *.jpg
 
 tinypng *.jpg
+
+
+find . -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -print0 |
+while IFS= read -r -d '' file; do
+    width=$(sips -g pixelWidth "$file" 2>/dev/null | awk '/pixelWidth/ {print $2}')
+
+    [ -z "$width" ] && continue
+
+    temp="${file}.tmp"
+
+    case "${file##*.}" in
+        jpg|JPG|jpeg|JPEG)
+            if [ "$width" -gt 2000 ]; then
+                echo "RESIZE: $file ($width → 2000px)"
+                sips -s format jpeg -s formatOptions 85 \
+                    --resampleWidth 2000 "$file" --out "$temp" >/dev/null
+            else
+                echo "COMPRESS: $file ($width px)"
+                sips -s format jpeg -s formatOptions 85 \
+                    "$file" --out "$temp" >/dev/null
+            fi
+            ;;
+        png|PNG)
+            if [ "$width" -gt 2000 ]; then
+                echo "RESIZE: $file ($width → 2000px)"
+                sips -s format png \
+                    --resampleWidth 2000 "$file" --out "$temp" >/dev/null
+            else
+                echo "COMPRESS: $file ($width px)"
+                sips -s format png \
+                    "$file" --out "$temp" >/dev/null
+            fi
+            ;;
+    esac
+
+    if [ -f "$temp" ]; then
+        mv "$temp" "$file"
+    else
+        echo "ERROR: failed to create $temp"
+    fi
+done
 ```
